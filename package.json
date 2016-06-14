@@ -1,0 +1,41 @@
+{
+  "name": "observable-object-es6",
+  "version": "0.9.0",
+  "description": "Small library with observable object for use in browser, node and es6 based on event-emitter-es6.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run bundle && npm run minify && npm run bundle-node",
+    "bundle": "browserify index.es6 > dist/observable-object.js -s ObservableObject -t [ babelify ] && echo \"bundled\"",
+    "bundle-node": "babel index.es6 -o index.js && echo \"bundled for node\"",
+    "minify": "uglifyjs dist/observable-object.js -o dist/observable-object.min.js -m && echo \"minified\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/insane-jo/observable-object.git"
+  },
+  "keywords": [
+    "observable",
+    "observe",
+    "observable",
+    "object"
+  ],
+  "author": "insane-jo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/insane-jo/observable-object/issues"
+  },
+  "homepage": "https://github.com/insane-jo/observable-object#readme",
+  "dependencies": {
+    "event-emitter-es6": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "uglify-js": "^2.6.2"
+  }
+}
