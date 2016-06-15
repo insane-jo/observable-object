@@ -3,7 +3,7 @@ import EventEmitter from 'event-emitter-es6';
 const DEFAULT_OPTS = {
     emitOnEachPropChange: false,
     emitSummaryChanges: true,
-    strictMode: true,
+    strictMode: false,
     eventEmitterStrictMode: false,
     emitDelay: 10,
     fields: []
@@ -49,6 +49,10 @@ class ObservableObject extends EventEmitter {
             this[key] = base[key];
         });
         this.fetchFields();
+
+        if ( getOptValue(opts, 'strictMode') ) {
+            Object.seal(this);
+        }
     }
 
     /**

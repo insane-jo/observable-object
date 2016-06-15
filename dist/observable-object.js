@@ -20,7 +20,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DEFAULT_OPTS = {
     emitOnEachPropChange: false,
     emitSummaryChanges: true,
-    strictMode: true,
+    strictMode: false,
     eventEmitterStrictMode: false,
     emitDelay: 10,
     fields: []
@@ -71,6 +71,10 @@ var ObservableObject = function (_EventEmitter) {
             _this[key] = base[key];
         });
         _this.fetchFields();
+
+        if (getOptValue(opts, 'strictMode')) {
+            Object.seal(_this);
+        }
         return _this;
     }
 

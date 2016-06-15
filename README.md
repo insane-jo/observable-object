@@ -191,6 +191,7 @@ An option can be passed to constructor
 * `[opts.eventEmitterStrictMode = false]` - strict mode for EventEmitter inherited instance.
 * `[opts.emitDelay = 10]` - delay in ms for emit events. if 0 - all events fired synchronously
 * `[opts.fields = []]` - additional fields, that need to be observed, but not initted in base property
+* `[opts.strictMode = false]` - if true, instance will be sealed [Object.seal on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal) (no new props to instance can be added)
 
 ### fetchFields()
 
@@ -243,3 +244,9 @@ Build (Browserifies, and minifies)
 npm install
 npm run build
 ```
+
+## Change list
+
+### Version 1.0.1
+
+* Added strict mode to constructor options. If setted - ObservableObject instance will be sealed. And no new properties to object can be added. In `'use strict';` mode will be thrown a TypeError.
