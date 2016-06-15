@@ -1,11 +1,12 @@
 {
   "name": "observable-object-es6",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Small library with observable object for use in browser, node and es6 based on event-emitter-es6.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run bundle && npm run minify && npm run bundle-node",
-    "bundle": "browserify index.es6 > dist/observable-object.js -s ObservableObject -t [ babelify ] && echo \"bundled\"",
+    "build": "npm run bundle-node && npm run bundle && npm run minify",
+    "old-bundle": "browserify index.es6 > dist/observable-object.js -s ObservableObject -t [ babelify ] && echo \"bundled\"",
+    "bundle": "webpack && echo \"bundled\"",
     "bundle-node": "babel index.es6 -o index.js && echo \"bundled for node\"",
     "minify": "uglifyjs dist/observable-object.js -o dist/observable-object.min.js -m && echo \"minified\"",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -36,6 +37,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
-    "uglify-js": "^2.6.2"
+    "uglify-js": "^2.6.2",
+    "webpack": "^1.13.1"
   }
 }

@@ -33,12 +33,10 @@ var app = express();
 
 <... your code here ...>
 
-app.use( require('event-emitter-es6/router') );
 app.use( require('observable-object-es6/router') );
 ```
 
 ```html
-<script src="event-emitter-es6/event-emitter.min.js"></script>
 <script src="observable-object-es6/observable-object.min.js"></script>
 ``` 
 
@@ -246,6 +244,10 @@ npm run build
 ```
 
 ## Change list
+
+### Version 1.0.2
+
+* Bugfix with bundled file
 
 ### Version 1.0.1
 
