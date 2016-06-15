@@ -1,6 +1,6 @@
 {
   "name": "observable-object-es6",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Small library with observable object for use in browser, node and es6 based on event-emitter-es6.",
   "main": "index.js",
   "scripts": {

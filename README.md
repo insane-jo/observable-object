@@ -4,6 +4,8 @@ A small observable object library. Works in the browser and in Node. Can be used
 
 For more information you can see jsdoc info in `index.es6` file.
 
+Very simply applies to express.
+
 ## Install
 
 Node
@@ -21,6 +23,23 @@ bower install observable-object-es6 --save
 ```html
 <script src="bower_components/event-emitter-es6/dist/event-emitter.min.js"></script>
 <script src="bower_components/observable-object-es6/dist/observable-object.min.js"></script>
+``` 
+
+or apply via express
+
+```javascript
+var express = require('express');
+var app = express();
+
+<... your code here ...>
+
+app.use( require('event-emitter-es6/router') );
+app.use( require('observable-object-es6/router') );
+```
+
+```html
+<script src="event-emitter-es6/event-emitter.min.js"></script>
+<script src="observable-object-es6/observable-object.min.js"></script>
 ``` 
 
 ## Usage
@@ -107,6 +126,58 @@ observedInstance.notObservedBeforeProperty = 'now this field observed';
 ```
 
 
+## Events
+
+### Changes data definition
+
+```jsdoc
+/**
+ * @typedef {{}} ChangeRow
+ * @prop {string} field
+ * @prop {*} oldValue
+ * @prop {*} newValue
+ */
+ 
+/**
+ * @typedef {ChangeRow[]} TotalChangesByField
+ */
+ 
+/**
+ * @typedef {Object.<string, TotalChangesByField>} SummaryChangesObject
+ * @descr key - changed field name, value - array of changes by this field
+ */
+```
+
+### `change`
+
+Fires summary changes if `opts.emitSummaryChanges = true` in constructor
+
+```javascript
+instance.on('change', 
+    /**
+     * @param {SummaryChangesObject} changes
+     */
+    function (changes) {
+    
+    }
+);
+```
+
+### `change:#FIELD_NAME`
+
+Fires on each field change if `opts.emitOnEachPropChange = true` in constructor
+
+```javascript
+instance.on('change:instanceFieldName', 
+    /**
+     * @param {TotalChangesByField} changes
+     */
+    function (changes) {
+    
+    }
+);
+```
+
 ## Instance Methods
 
 ### constructor(base, [opts])
@@ -125,12 +196,16 @@ An option can be passed to constructor
 
 Look for new initted fields, that wasn't observed before and make them watchable.
 
+### dropChanges()
+
+Drops changes if them was collected and clears timeout if it was emitted.
+
 ### on(event, callback)
 
 Subscribe to an event
 
 * `event` - the name of the event to subscribe to
-* `callback` - the function to call when event is emitted (for transfer context use __bind__ method of Function.prototype) 
+* `callback` - the function to call when event is emitted (for transfer context use __bind__ method of Function.prototype)
 
 ### once(event, callback)
 

@@ -1,10 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ObservableObject = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -38,8 +34,13 @@ var ObservableObject = function (_EventEmitter) {
     _inherits(ObservableObject, _EventEmitter);
 
     /**
-     * @param {!{}} base
+     * @param {!Object.<string, *>} base
      * @param {?{}} opts
+     * @param {boolean} [opts.emitOnEachPropChange = false]
+     * @param {boolean} [opts.emitSummaryChanges = true]
+     * @param {boolean} [opts.eventEmitterStrictMode = false]
+     * @param {number} [opts.emitDelay = 10]
+     * @param {string[]} [opts.fields = []]
      */
 
     function ObservableObject(base, opts) {
@@ -57,7 +58,7 @@ var ObservableObject = function (_EventEmitter) {
 
         var emitterOpts = {
             strictMode: opts.hasOwnProperty('eventEmitterStrictMode') ? opts.eventEmitterStrictMode : DEFAULT_OPTS.eventEmitterStrictMode,
-            emitDelay: 0 //(opts.hasOwnProperty('emitDelay') ? opts.emitDelay : DEFAULT_OPTS.emitDelay)
+            emitDelay: 0
         };
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ObservableObject).call(this, emitterOpts));
@@ -72,6 +73,11 @@ var ObservableObject = function (_EventEmitter) {
         _this.fetchFields();
         return _this;
     }
+
+    /**
+     * Look for new initted fields, that wasn't observed before and make them watchable.
+     */
+
 
     _createClass(ObservableObject, [{
         key: 'fetchFields',
@@ -117,6 +123,14 @@ var ObservableObject = function (_EventEmitter) {
                 _this2[row.field] = row.value;
             });
         }
+
+        /**
+         * @param key
+         * @param oldValue
+         * @param newValue
+         * @protected
+         */
+
     }, {
         key: '__addChange',
         value: function __addChange(key, oldValue, newValue) {
@@ -134,6 +148,11 @@ var ObservableObject = function (_EventEmitter) {
 
             this.__emitChangesIfNeeded();
         }
+
+        /**
+         * @protected
+         */
+
     }, {
         key: '__emitChangesIfNeeded',
         value: function __emitChangesIfNeeded() {
@@ -144,6 +163,11 @@ var ObservableObject = function (_EventEmitter) {
                 this.__emitChanges();
             }
         }
+
+        /**
+         * @protected
+         */
+
     }, {
         key: '__emitChanges',
         value: function __emitChanges() {
@@ -163,12 +187,27 @@ var ObservableObject = function (_EventEmitter) {
                 });
             }
         }
+
+        /**
+         * Drops changes if them was collected and clears timeout if it was emitted.
+         */
+
+    }, {
+        key: 'dropChanges',
+        value: function dropChanges() {
+            if (this.__changes) {
+                this.__changes = {};
+            }
+            if (this.__options.timeoutId) {
+                delete this.__options.timeoutId;
+            }
+        }
     }]);
 
     return ObservableObject;
 }(_eventEmitterEs2.default);
 
-exports.default = ObservableObject;
+module.exports = ObservableObject;
 
 },{"event-emitter-es6":2}],2:[function(require,module,exports){
 'use strict';

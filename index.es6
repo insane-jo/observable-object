@@ -13,7 +13,7 @@ function getOptValue(opt, key) {
     return (opt.hasOwnProperty(key) ? opt[key] : DEFAULT_OPTS[key]);
 }
 
-export default class ObservableObject extends EventEmitter {
+class ObservableObject extends EventEmitter {
     /**
      * @param {!Object.<string, *>} base
      * @param {?{}} opts
@@ -148,4 +148,18 @@ export default class ObservableObject extends EventEmitter {
             });
         }
     }
+
+    /**
+     * Drops changes if them was collected and clears timeout if it was emitted.
+     */
+    dropChanges() {
+        if (this.__changes) {
+            this.__changes = {};
+        }
+        if (this.__options.timeoutId) {
+            delete this.__options.timeoutId;
+        }
+    }
 }
+
+module.exports = ObservableObject;
